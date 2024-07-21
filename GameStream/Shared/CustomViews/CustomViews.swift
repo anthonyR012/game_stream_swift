@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import AVKit
 
 struct ButtonGrayLabel: View {
     var description : String
@@ -214,5 +215,35 @@ struct RoundedCorners: Shape {
                     clockwise: false)
         
         return path
+    }
+}
+
+
+
+
+struct FullScreenVideoView: View {
+    let videoURL: URL
+    
+    var body: some View {
+        VideoPlayer(player: AVPlayer(url: videoURL))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+    }
+}
+
+
+
+struct VideoController: UIViewControllerRepresentable {
+    var videoURL: URL
+    
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let controller = AVPlayerViewController()
+        let player = AVPlayer(url: videoURL)
+        controller.player = player
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+        // Optional: Update the view controller if needed
     }
 }

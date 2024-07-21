@@ -1,13 +1,12 @@
 //
-//  MostPopular.swift
+//  MostPopularView.swift
 //  GameStream
 //
-//  Created by Anthony Rubio on 20/07/24.
+//  Created by Anthony Rubio on 21/07/24.
 //
 
 import Foundation
 import SwiftUI
-import AVKit
 
 
 
@@ -43,6 +42,7 @@ struct ItemMostPopular : View {
                 } placeholder: {
                     ProgressView()
                         .frame(width: 200, height: 200)
+                        .foregroundStyle(.white)
                 }
                 VStack {
                     Spacer()
@@ -72,29 +72,3 @@ struct ItemMostPopular : View {
     }
 }
 
-struct FullScreenVideoView: View {
-    let videoURL: URL
-    
-    var body: some View {
-        VideoPlayer(player: AVPlayer(url: videoURL))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-
-
-
-struct VideoController: UIViewControllerRepresentable {
-    var videoURL: URL
-    
-    func makeUIViewController(context: Context) -> AVPlayerViewController {
-        let controller = AVPlayerViewController()
-        let player = AVPlayer(url: videoURL)
-        controller.player = player
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
-        // Optional: Update the view controller if needed
-    }
-}

@@ -30,7 +30,7 @@ struct SignInView: View {
 struct FooterViewSignIn: View {
     var body: some View {
         VStack{
-            NavigationLink(destination: HomeView()) {
+            NavigationLink(destination: MenuInitialView()) {
                 ButtonMainView(description: "INICIAR SESIÓN")
             }
             Text("Iniciar sesíon con redes sociales")

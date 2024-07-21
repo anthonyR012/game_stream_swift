@@ -14,20 +14,20 @@ enum Pages {
 
 struct MenuInitialView: View {
     @State var currentPage: Pages = Pages.Home
-    
-    
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject private var viewModel = HomeViewModel()
     
     var body: some View {
         TabView (selection: $currentPage){
-            HomeView().font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
+            HomeView(viewModel: viewModel).font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
                 Image(systemName: "person")
                 Text("Perfil")
             }.tag(Pages.Profile)
-            Text("Pantalla Juegos").font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
+            GameView(viewModel: viewModel).font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
                 Image(systemName: "gamecontroller")
                 Text("Juegos ")
             }.tag(Pages.Games)
-            HomeView().font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
+            HomeView(viewModel: viewModel).font(.system(size: 30,weight: .bold,design: .rounded)).tabItem {
                 Image(systemName: "house")
                 Text("Inicio")
             }.tag(Pages.Home)
@@ -36,7 +36,21 @@ struct MenuInitialView: View {
                 Text("Favoritos")
             }.tag(Pages.Favourites)
         }.tint(.white)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading: Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }) {
+                HStack {
+                    Image(systemName: "arrow.backward")
+                        .foregroundStyle(.darkCian)
+                }
+            })
+            .onAppear {
+                viewModel.fetchGames()
+            }
+        
     }
+    
     
     
     init() {
@@ -44,7 +58,5 @@ struct MenuInitialView: View {
         UITabBar.appearance().unselectedItemTintColor = UIColor(Color.white.opacity(0.5))
         UITabBar.appearance().barTintColor = UIColor(Color("BlurOpacity")) // Optional, for older versions
         
-        
-        print("init views")
     }
 }

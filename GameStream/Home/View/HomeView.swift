@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct HomeView : View {
+    @ObservedObject var viewModel : HomeViewModel
     var body: some View {
         ZStack {
             Color("MainColor")
                 .ignoresSafeArea()
-            ScrollView {
+            ScrollView ( showsIndicators: false ) {
                 VStack {
                     Image("Logo")
                         .resizable()
                         .frame(width: 200, height: 25)
                         .padding(.bottom, 10)
-                    ContentHomeView()
+                    ContentHomeView(viewModel: viewModel)
                 }
-            }
+            }.padding(20)
         }
     }
 }
@@ -40,9 +41,10 @@ struct TextTitleHome: View {
 }
 
 struct ContentHomeView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @ObservedObject var viewModel :  HomeViewModel
     
     var body: some View {
+           
         VStack (alignment: .leading) {
             if viewModel.isLoading {
                 VStack {
@@ -55,19 +57,19 @@ struct ContentHomeView: View {
             } else if viewModel.gamesInfo.isEmpty {
                 Text("Sin resultados")
             } else {
+                let mostPopular = viewModel.gamesInfo.first!
+                let recommended = Array(viewModel.gamesInfo[1...(viewModel.gamesInfo.count - 1)])
+                let mayLikeYou = viewModel.gamesInfo.last!
                 InputSearchHome()
-                MostPopularView(mostPopular: viewModel.gamesInfo.first!)
+                MostPopularView(mostPopular: mostPopular)
                 CategoriesView()
-                RecommendedView()
-                MayLikedYouView()
+                RecommendedView(recommended: recommended)
+                MayLikedYouView(mayLikeYou: mayLikeYou)
                 
             }
             
             
-        }.padding(20)
-            .onAppear {
-                viewModel.fetchGames()
-            }
+        }
     }
 }
 
@@ -108,12 +110,6 @@ struct InputSearchHome: View {
 }
 
 
-#Preview{
-    HomeView()
-}
-
-
-
 
 struct ItemCategoryView: View {
     var description : String
@@ -150,63 +146,6 @@ struct CategoriesView: View {
                 HStack{
                     ItemCategoryView(description: "FPS", icon:  "tent.circle")
                     ItemCategoryView(description: "RPG", icon:  "gamecontroller")
-                    
-                }
-            }
-        }
-    }
-}
-
-struct RecommendedView: View {
-    var body: some View {
-        VStack (alignment: .leading) {
-            TextTitleHome(description: "RECOMENDADO PARA TI")
-                .padding(.leading, 5)
-            ScrollView (.horizontal, showsIndicators: false) {
-                HStack{
-                    Rectangle()
-                        .clipShape(RoundedCorners(
-                            topLeft: 4,topRight: 4, bottomLeft: 4,bottomRight: 4))
-                        .foregroundStyle(.blueGray).frame(
-                            width: UIScreen.main.bounds.width * 0.7,
-                            height: 160
-                        )
-                    Rectangle()
-                        .clipShape(RoundedCorners(
-                            topLeft: 4,topRight: 4, bottomLeft: 4,bottomRight: 4))
-                        .foregroundStyle(.blueGray).frame(
-                            width: UIScreen.main.bounds.width * 0.7,
-                            height: 160
-                        )
-                    
-                }
-            }
-        }
-    }
-}
-
-
-struct MayLikedYouView: View {
-    var body: some View {
-        VStack (alignment: .leading) {
-            TextTitleHome(description: "VIDEOS QUE PODRíAN GUSTARTE")
-                .padding(.leading, 5)
-            ScrollView (.horizontal, showsIndicators: false) {
-                HStack{
-                    Rectangle()
-                        .clipShape(RoundedCorners(
-                            topLeft: 4,topRight: 4, bottomLeft: 4,bottomRight: 4))
-                        .foregroundStyle(.blueGray).frame(
-                            width: UIScreen.main.bounds.width * 0.7,
-                            height: 160
-                        )
-                    Rectangle()
-                        .clipShape(RoundedCorners(
-                            topLeft: 4,topRight: 4, bottomLeft: 4,bottomRight: 4))
-                        .foregroundStyle(.blueGray).frame(
-                            width: UIScreen.main.bounds.width * 0.7,
-                            height: 160
-                        )
                     
                 }
             }
