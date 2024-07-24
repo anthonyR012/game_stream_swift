@@ -9,24 +9,24 @@ import Foundation
 import SwiftUI
 
 struct MayLikedYouView: View {
-    var mayLikeYou : GameElement
+    var mayLikeYou: GameElement
     var body: some View {
-        VStack (alignment: .leading) {
+        VStack(alignment: .leading) {
             TextTitleHome(description: "VIDEOS QUE PODRíAN GUSTARTE")
                 .padding(.leading, 5)
-            ScrollView (.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 MayLikedYouItemView(itemGame: mayLikeYou)
             }
         }
     }
 }
 
-struct MayLikedYouItemView : View{
-    var itemGame : GameElement
+struct MayLikedYouItemView: View {
+    var itemGame: GameElement
     var body: some View {
         let networkImage = URL(string: itemGame.galleryImages.first ?? "")!
         let videoURL = URL(string: itemGame.videosUrls.mobile)!
-        NavigationLink (destination: FullScreenVideoView(videoURL: videoURL)){
+        NavigationLink(destination: VideoPlayerView(videoURL: videoURL)) {
             AsyncImage(url: networkImage) { image in
                 image
                     .resizable()
@@ -42,8 +42,5 @@ struct MayLikedYouItemView : View{
                 height: 160
             )
         }
-        
     }
 }
-
-

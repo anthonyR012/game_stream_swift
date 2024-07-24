@@ -19,30 +19,24 @@ struct SignInView: View {
                            showSubTitlePassword: true,
                            isSecure: true)
             FooterViewSignIn()
-            
         }
     }
 }
 
-
-
-
 struct FooterViewSignIn: View {
     var body: some View {
-        VStack{
+        VStack {
             NavigationLink(destination: MenuInitialView()) {
                 ButtonMainView(description: "INICIAR SESIÓN")
             }
             Text("Iniciar sesíon con redes sociales")
                 .foregroundStyle(Color(.white))
-                .padding(.top,40)
+                .padding(.top, 40)
                 .frame(maxWidth: .infinity)
-            HStack{
+            HStack {
                 ButtonGrayLabel(description: "Facebook")
                 ButtonGrayLabel(description: "Instagram")
-            }.padding(.top,10)
+            }.padding(.top, 10)
         }
     }
 }
-
-

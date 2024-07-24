@@ -8,29 +8,24 @@
 import Foundation
 import SwiftUI
 
-
-
 struct MostPopularView: View {
-    let mostPopular : GameElement
+    let mostPopular: GameElement
     var body: some View {
-        
-        VStack (alignment: .leading) {
+        VStack(alignment: .leading) {
             TextTitleHome(description: "LOS MÁS POPULARES")
                 .padding(.leading, 5)
             ItemMostPopular(mostPopular: mostPopular)
-            
         }
     }
 }
 
-
-struct ItemMostPopular : View {
-    let mostPopular : GameElement
-    var body: some View{
+struct ItemMostPopular: View {
+    let mostPopular: GameElement
+    var body: some View {
         let videoURL = URL(string: mostPopular.videosUrls.mobile)!
         let networkImage = URL(string: mostPopular.galleryImages.first ?? "")!
-        NavigationLink (destination: FullScreenVideoView(videoURL: videoURL)){
-            ZStack{
+        NavigationLink(destination: VideoPlayerView(videoURL: videoURL)) {
+            ZStack {
                 Rectangle()
                     .clipShape(RoundedCorners(bottomLeft: 4, bottomRight: 4))
                 AsyncImage(url: networkImage) { image in
@@ -48,10 +43,10 @@ struct ItemMostPopular : View {
                     Spacer()
                     Image(systemName: "play.circle")
                         .resizable()
-                        .frame(width: 60,height: 60)
+                        .frame(width: 60, height: 60)
                         .foregroundStyle(.white)
                     Spacer()
-                    ZStack (alignment: .leading) {
+                    ZStack(alignment: .leading) {
                         Rectangle()
                             .clipShape(RoundedCorners(bottomLeft: 4, bottomRight: 4))
                             .foregroundStyle(.blueGray)
@@ -59,16 +54,12 @@ struct ItemMostPopular : View {
                             Spacer()
                             TextTitleHome(description: mostPopular.title, fontSize: .title2)
                             Spacer()
-                        }.padding(.leading,15)
+                        }.padding(.leading, 15)
                     }
                     .frame(height: 70)
                 }
-                
-                
+
             }.frame(height: 250)
         }.foregroundStyle(.white.opacity(0))
-        
-        
     }
 }
-

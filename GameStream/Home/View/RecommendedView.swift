@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct RecommendedView: View {
-    var recommended : [GameElement]
-    
+    var recommended: [GameElement]
+
     var body: some View {
-        VStack (alignment: .leading) {
+        VStack(alignment: .leading) {
             TextTitleHome(description: "RECOMENDADO PARA TI")
                 .padding(.leading, 5)
-            ScrollView (.horizontal, showsIndicators: false) {
-                HStack{
-                    ForEach(recommended,id: \.self) {
-                        game  in RecommendedItem(itemGame: game)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(recommended, id: \.self) {
+                        game in RecommendedItem(itemGame: game)
                     }
                 }
             }
@@ -25,12 +25,12 @@ struct RecommendedView: View {
     }
 }
 
-struct RecommendedItem : View{
-    var itemGame : GameElement
+struct RecommendedItem: View {
+    var itemGame: GameElement
     var body: some View {
         let networkImage = URL(string: itemGame.galleryImages.first ?? "")!
         let videoURL = URL(string: itemGame.videosUrls.mobile)!
-        NavigationLink (destination: FullScreenVideoView(videoURL: videoURL)){
+        NavigationLink(destination: VideoPlayerView(videoURL: videoURL)) {
             AsyncImage(url: networkImage) { image in
                 image
                     .resizable()
@@ -46,6 +46,5 @@ struct RecommendedItem : View{
                 height: 160
             )
         }
-        
     }
 }

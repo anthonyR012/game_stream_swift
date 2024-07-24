@@ -5,14 +5,14 @@
 //  Created by Anthony Rubio on 13/07/24.
 //
 
+import AVKit
 import Foundation
 import SwiftUI
-import AVKit
 
 struct ButtonGrayLabel: View {
-    var description : String
+    var description: String
     var body: some View {
-        ZStack{
+        ZStack {
             Rectangle()
                 .frame(
                     width: UIScreen.main.bounds.width * 0.4,
@@ -21,26 +21,23 @@ struct ButtonGrayLabel: View {
                 .foregroundColor(Color("BlueGray"))
                 .background(Color.blue)
                 .cornerRadius(10)
-            
-            
+
             Button(action: {}, label: {
                 Text(description)
                     .foregroundStyle(
                         Color(.white))
                     .bold()
-                
+
             })
         }
     }
 }
 
-
 struct ButtonMainView: View {
-    var description : String
-    var onTap : (() -> Void)?
-    
-    var body: some View{
-            
+    var description: String
+    var onTap: (() -> Void)?
+
+    var body: some View {
         ZStack {
             Rectangle()
                 .frame(
@@ -60,37 +57,31 @@ struct ButtonMainView: View {
                 .foregroundStyle(
                     Color(.white))
                 .bold()
-            
-                
+
         }.padding(.top, 60)
-          
     }
 }
-
-
 
 struct InputFieldView: View {
     @Binding var text: String
     @FocusState private var isFocused: Bool
     var description: String
     var showSubTitlePassword: Bool = false
-    var isSecure : Bool = false
-    
-    
+    var isSecure: Bool = false
+
     var body: some View {
         VStack {
             Text(description)
                 .foregroundStyle(isFocused ? Color(.white) : Color("DarkCian"))
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
-            ZStack (alignment: .leading){
+            ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text("Ingresa \(description)")
                         .foregroundColor(.gray)
                         .padding(.bottom, 2)
                         .bold()
                         .font(.caption)
-                    
                 }
                 if isSecure {
                     SecureField("", text: $text)
@@ -104,7 +95,7 @@ struct InputFieldView: View {
                                 Rectangle()
                                     .frame(height: 2)
                                     .foregroundColor(isFocused ? Color(.gray) : Color("DarkCian"))
-                                    .padding(.top,2)
+                                    .padding(.top, 2)
                             }
                         )
                 } else {
@@ -122,8 +113,7 @@ struct InputFieldView: View {
                         )
                 }
             }
-           
-           
+
             if showSubTitlePassword {
                 HStack {
                     Spacer()
@@ -136,10 +126,7 @@ struct InputFieldView: View {
         .padding(
             EdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 15))
     }
-
 }
-
-
 
 struct ChoosePhotoView: View {
     var body: some View {
@@ -149,7 +136,7 @@ struct ChoosePhotoView: View {
             Text("Puedes cambiar o elergirla más adelante")
                 .foregroundStyle(Color(.gray))
                 .font(.footnote)
-            ZStack{
+            ZStack {
                 Image("PlaceHolderImage")
                     .resizable()
                     .scaledToFill()
@@ -159,35 +146,29 @@ struct ChoosePhotoView: View {
                 Circle()
                     .foregroundColor(
                         Color.black.opacity(0.3))
-                    .frame(width: 100,height: 100)
+                    .frame(width: 100, height: 100)
                 Image(systemName: "camera")
                     .foregroundColor(.white)
-                    .frame(width: 60,height: 60)
-                
-                
-                
+                    .frame(width: 60, height: 60)
             }
         }
     }
 }
-
-
-
 
 struct RoundedCorners: Shape {
     var topLeft: CGFloat = 0.0
     var topRight: CGFloat = 0.0
     var bottomLeft: CGFloat = 0.0
     var bottomRight: CGFloat = 0.0
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        
-        let topLeftRadius = min(min(self.topLeft, rect.width / 2), rect.height / 2)
-        let topRightRadius = min(min(self.topRight, rect.width / 2), rect.height / 2)
-        let bottomLeftRadius = min(min(self.bottomLeft, rect.width / 2), rect.height / 2)
-        let bottomRightRadius = min(min(self.bottomRight, rect.width / 2), rect.height / 2)
-        
+
+        let topLeftRadius = min(min(topLeft, rect.width / 2), rect.height / 2)
+        let topRightRadius = min(min(topRight, rect.width / 2), rect.height / 2)
+        let bottomLeftRadius = min(min(bottomLeft, rect.width / 2), rect.height / 2)
+        let bottomRightRadius = min(min(bottomRight, rect.width / 2), rect.height / 2)
+
         path.move(to: CGPoint(x: rect.midX, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX - topRightRadius, y: rect.minY))
         path.addArc(center: CGPoint(x: rect.maxX - topRightRadius, y: rect.minY + topRightRadius),
@@ -213,37 +194,53 @@ struct RoundedCorners: Shape {
                     startAngle: Angle(degrees: 180),
                     endAngle: Angle(degrees: -90),
                     clockwise: false)
-        
+
         return path
     }
 }
 
-
-
-
-struct FullScreenVideoView: View {
+struct VideoPlayerView: View {
     let videoURL: URL
+    let width : CGFloat?
+    let height : CGFloat?
+    let automaticPlay : Bool
+    var avPlayer : AVPlayer
+    
+    init(videoURL: URL, width: CGFloat? = nil, height: CGFloat? = nil, automaticPlay: Bool = false) {
+        self.videoURL = videoURL
+        self.width = width
+        self.height = height
+        self.automaticPlay = automaticPlay
+        avPlayer = AVPlayer(url: videoURL)
+    }
     
     var body: some View {
-        VideoPlayer(player: AVPlayer(url: videoURL))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VideoPlayer(player: avPlayer)
+            .frame(
+                maxWidth: .infinity, maxHeight: .infinity)
+            .frame(
+                width: width,
+                height: height)
             .edgesIgnoringSafeArea(.all)
+            .onAppear {
+                if automaticPlay{
+                    avPlayer.play()
+                }
+            }
     }
 }
 
-
-
 struct VideoController: UIViewControllerRepresentable {
     var videoURL: URL
-    
-    func makeUIViewController(context: Context) -> AVPlayerViewController {
+
+    func makeUIViewController(context _: Context) -> AVPlayerViewController {
         let controller = AVPlayerViewController()
         let player = AVPlayer(url: videoURL)
         controller.player = player
         return controller
     }
-    
-    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+
+    func updateUIViewController(_: AVPlayerViewController, context _: Context) {
         // Optional: Update the view controller if needed
     }
 }

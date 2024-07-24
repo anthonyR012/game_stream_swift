@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct Games : Codable , Hashable {
+struct Games: Codable, Hashable {
     let games: [GameElement]
 }
 
-struct GameElement: Codable ,Hashable{
+struct GameElement: Codable, Hashable {
     let title, studio, contentRaiting, publicationYear: String
     let description: String
     let platforms, tags: [String]
@@ -19,8 +19,6 @@ struct GameElement: Codable ,Hashable{
     let galleryImages: [String]
 }
 
-
 struct VideosUrls: Codable, Hashable {
     let mobile, tablet: String
 }
-

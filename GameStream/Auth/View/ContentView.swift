@@ -19,23 +19,23 @@ struct ContentView: View {
                         .padding(.bottom, 10)
                     HeaderView(indexEnum: $indexEnum)
                         .padding(.bottom, 20)
-                   
+
                     ScrollView {
-                       
                         if indexEnum == NavigationIndex.first {
                             SignInView()
                         } else {
                             SignUpView()
                         }
                     }
-                               
+
                     Spacer()
-                    
-                    
+
                 }.padding(5)
             }
         }.navigationBarBackButtonHidden(true)
     }
+    
+   
 }
 
 struct HeaderView: View {
@@ -63,5 +63,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
